@@ -42,10 +42,12 @@ def extract_names_from_PDF_A(PDF_path):
     # 苗字：漢字1～5文字
     # 名：漢字・ひらがな・長音符号 1～5文字
     # スペースは全角・半角どちらもOK
+# 苗字：1～5文字
+# 名前：1～5文字
+# 許容文字 = 漢字, ひらがな, カタカナ(全角・半角), ヶ, 長音符号
     pattern = re.compile(
-        r"([\u4E00-\u9FFF]{1,5})[ 　]{1}([\u4E00-\u9FFF\u3040-\u309Fー]{1,5})"
+        r"([\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\uFF66-\uFF9Fヶー]{1,5})[ 　]{1}([\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\uFF66-\uFF9Fヶー]{1,5})"
     )
-
     matches = pattern.findall(text)
 
     full_names = []
