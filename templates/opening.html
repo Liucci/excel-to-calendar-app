@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Rive Test</title>
+  <script src="https://unpkg.com/@rive-app/canvas@2.9.1"></script>
+  <style>
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* 横中央 */
+  align-items: center;     /* 縦中央 */
+}
+#riveCanvas {
+  width: 50%;
+  max-width: 1024px;
+  height: auto;
+  display: block;
+}
+  </style>
+</head>
+<body>
+  <canvas id="riveCanvas" width="1024" height="1024"></canvas>
+
+  <script>
+    new rive.Rive({
+      src: "{{ url_for('static', filename='animations/icon_anime.riv') }}",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      artboard: "Artboard",
+                  onLoad: () => {
+                console.log("Rive loaded!");
+                // アニメーションが終わるまでの時間を設定（例: 3秒）
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('index') }}";
+                }, 5000);
+            }
+    });
+  </script>
+</body>
+
+</html>

@@ -53,6 +53,12 @@ SCOPES = [
 CLIENT_SECRET_FILE = 'credentials.json'
 
 @app.route("/", methods=["GET"])
+def opening():
+    return render_template("opening.html")
+
+
+
+@app.route("/index", methods=["GET"])
 def index():
         # アップロードフォルダのパス
     upload_folder = os.path.join(app.root_path, "uploads")
