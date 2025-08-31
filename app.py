@@ -73,10 +73,6 @@ def index():
                     print(f"uploadsフォルダ内削除: {file_path}")
             except Exception as e:
                 print(f"uploadsフォルダ内削除失敗: {file_path} ({e})")
-
-
-
-
     return render_template("index.html")
 
 @app.route("/upload", methods=["GET", "POST"])
