@@ -18,7 +18,7 @@ html, body {
   height: auto;
   display: block;
   opacity: 0;                /* ← 最初は非表示 */
-  transition: opacity 0.05s;  /* ← フェードイン */
+  transition: opacity 2.0s;  /* ← フェードイン */
 
 }
   </style>
@@ -51,7 +51,7 @@ html, body {
       // ページ遷移（5秒後）
       setTimeout(() => {
         window.location.href = "{{ url_for('index') }}";
-      }, 5000);
+      }, 7000);
     }
   });
 </script>
