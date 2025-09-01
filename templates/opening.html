@@ -17,27 +17,45 @@ html, body {
   max-width: 1024px;
   height: auto;
   display: block;
+  opacity: 0;                /* ← 最初は非表示 */
+  transition: opacity 0.05s;  /* ← フェードイン */
+
 }
   </style>
 </head>
 <body>
-  <canvas id="riveCanvas" width="1024" height="1024"></canvas>
+  <canvas id="riveCanvas" width="1024" height="1600"></canvas>
 
-  <script>
-    new rive.Rive({
-      src: "{{ url_for('static', filename='animations/icon_anime.riv') }}",
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-      artboard: "Artboard",
-                  onLoad: () => {
-                console.log("Rive loaded!");
-                // アニメーションが終わるまでの時間を設定（例: 3秒）
-                setTimeout(() => {
-                    window.location.href = "{{ url_for('index') }}";
-                }, 5000);
-            }
-    });
-  </script>
+<script>
+  const canvas = document.getElementById("riveCanvas");
+
+  // 先に変数を宣言しておく
+  let riveInstance = null;
+
+  riveInstance = new rive.Rive({
+    src: "{{ url_for('static', filename='animations/icon_anime.riv') }}",
+    canvas: canvas,
+    autoplay: false, // ← 自動再生はOFF
+    artboard: "Artboard",
+    onLoad: () => {
+      console.log("Rive loaded!");
+
+      // 読み込み完了後に再生開始
+      riveInstance.play();
+
+      // フェードイン（必要なら）
+      requestAnimationFrame(() => {
+        canvas.style.opacity = 1;
+      });
+
+      // ページ遷移（5秒後）
+      setTimeout(() => {
+        window.location.href = "{{ url_for('index') }}";
+      }, 5000);
+    }
+  });
+</script>
+
 </body>
 
 </html>
