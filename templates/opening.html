@@ -17,9 +17,8 @@ html, body {
   max-width: 1024px;
   height: auto;
   display: block;
-  opacity: 0;                /* ← 最初は非表示 */
-  transition: opacity 2.0s;  /* ← フェードイン */
-
+  /* opacity: 0;               
+  transition: opacity 5s ease;   */
 }
   </style>
 </head>
@@ -27,31 +26,31 @@ html, body {
   <canvas id="riveCanvas" width="1024" height="1600"></canvas>
 
 <script>
-  const canvas = document.getElementById("riveCanvas");
 
   // 先に変数を宣言しておく
   let riveInstance = null;
 
   riveInstance = new rive.Rive({
     src: "{{ url_for('static', filename='animations/icon_anime.riv') }}",
-    canvas: canvas,
-    autoplay: false, // ← 自動再生はOFF
-    artboard: "Artboard",
+    canvas: document.getElementById("riveCanvas"),    
+    autoplay: true, // ← 自動再生はOFF
+    // artboard: "Artboard",
+    stateMachines: ["State Machine 1"], // ← State Machine を指定   
     onLoad: () => {
       console.log("Rive loaded!");
+            // Input を取得
+      const inputs = riveInstance.stateMachineInputs("State Machine 1");
+      const startTrigger = inputs.find(i => i.name === "Trigger 1");
 
-      // 読み込み完了後に再生開始
-      riveInstance.play();
-
-      // フェードイン（必要なら）
-      requestAnimationFrame(() => {
-        canvas.style.opacity = 1;
-      });
+      // トリガーを発火してアニメ開始
+      if (startTrigger) {
+        startTrigger.fire();
+      }
 
       // ページ遷移（5秒後）
       setTimeout(() => {
         window.location.href = "{{ url_for('index') }}";
-      }, 7000);
+      }, 8000);
     }
   });
 </script>
