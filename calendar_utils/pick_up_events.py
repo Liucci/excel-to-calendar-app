@@ -29,19 +29,38 @@ def pick_up_events(service: Resource, calendar_id: str, year: int, month: int, t
 
     events = events_result.get('items', [])
     print(f"events:\n{events}")
-          
+    #google calendar api から取得では、月を指定しても翌月１日イベントも含めて取得されることがあるため、年月で再フィルタリング
+    same_month_events = []
+    for e in events:
+        start = e.get("start", {})
+
+        if "dateTime" in start:  # 時間指定イベント
+            start_dt = datetime.fromisoformat(start["dateTime"].replace("Z", "+00:00"))
+        elif "date" in start:  # 終日イベント
+            start_dt = datetime.fromisoformat(start["date"] + "T00:00:00+00:00")
+        else:
+            continue
+
+        # 年月が一致するかどうか
+        if start_dt.year == year and start_dt.month == month:
+            same_month_events.append(e)
+    
+    print("same_month_events:")
+    for a in same_month_events:
+        print(f"・{a}")            
+
  # --- タグでフィルタリング ---
     if tags:
         # 安全のためタグはすべて文字列化＆前後の空白削除
         normalized_tags = [t.strip() for t in tags if isinstance(t, str)]
         filtered_events = []
-        for e in events:
+        for e in same_month_events:
             desc = e.get("description", "") or ""
             desc_norm = desc.replace("\u3000", " ").strip()  # 全角空白除去
             if any(tag in desc_norm for tag in normalized_tags):
                 filtered_events.append(e)
     else:
-        filtered_events = events    
+        filtered_events = same_month_events    
     
     print(f"filterd_events:\n{filtered_events}")
     

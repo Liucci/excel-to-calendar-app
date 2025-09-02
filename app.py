@@ -194,7 +194,7 @@ def upload_file():
                 for a in names:
                     print("・", a)
             except Exception as e:
-                return render_template("error_back_to_upload.html", message=f"血液浄化センター勤務表から職員名簿作成失敗{e}")
+                return render_template("error_back_to_upload.html", message=f"手術室業務担当予定表から職員名簿作成失敗{e}")
         else:
             return render_template("error_back_to_upload.html",message="勤務表が1つもアップロードされていません")
         
