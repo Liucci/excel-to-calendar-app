@@ -1,6 +1,7 @@
 from googleapiclient.discovery import Resource
 from typing import List
 from datetime import datetime, timezone
+import calendar
 def pick_up_events(service: Resource, calendar_id: str, year: int, month: int, tags: List[str] = None):
     """
     指定年月とタグで予定を抽出
@@ -12,12 +13,11 @@ def pick_up_events(service: Resource, calendar_id: str, year: int, month: int, t
     :return: 該当イベントのリスト
     """
 
-
+# 月初
     start = datetime(year, month, 1, tzinfo=timezone.utc)
-    if month == 12:
-        end = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
-    else:
-        end = datetime(year, month + 1, 1, tzinfo=timezone.utc)
+# 月末
+    last_day = calendar.monthrange(year, month)[1]
+    end = datetime(year, month, last_day, 23, 59, 59, tzinfo=timezone.utc)
 
     events_result = service.events().list(
         calendarId=calendar_id,
